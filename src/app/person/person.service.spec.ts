@@ -1,5 +1,5 @@
 import { HttpClientTestingModule } from "@angular/common/http/testing";
-import { fakeAsync } from "@angular/core/testing";
+import { fakeAsync, flush } from "@angular/core/testing";
 import { ReactiveFormsModule } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCheckboxModule } from "@angular/material/checkbox";
@@ -46,6 +46,18 @@ const DEFAULT_CONFIG = {
 	female: true
 };
 
+const MALE_CONFIG = {
+	count: 3,
+	male: true,
+	female: false
+};
+
+const LESS_CONFIG = {
+	count: 2,
+	male: true,
+	female: true
+};
+
 describe("PersonListComponent", () => {
 
 	let spectator: Spectator<PersonListComponent>;
@@ -79,17 +91,18 @@ describe("PersonListComponent", () => {
 		expect(spectator.component).toBeTruthy();
 	});
 
-	test("should provide a list of 3 persons", fakeAsync(() => {
-
+	test('should provide an Http.get of persons', fakeAsync(() => {
 		expect(spectatorHttp.service.getPersons).toBeTruthy();
 
 		spectatorHttp.service.getPersons(DEFAULT_CONFIG).subscribe();
 		spectatorHttp.expectOne("/assets/data/persons.json", HttpMethod.GET);
+		flush();
+	}))
 
+	test("should provide a list of all persons", fakeAsync(() => {
 		spectatorHttp.service.getPersons(DEFAULT_CONFIG).subscribe(element => {
-			expect(element.length).toBe(1);
+			expect(element.length).toBe(3);
 			expect(element.map(p => p.id)).toEqual([1, 2, 3]);
-
 		});
 
 		const reqs = spectatorHttp.expectConcurrent([
@@ -97,9 +110,34 @@ describe("PersonListComponent", () => {
 		]);
 
 		spectatorHttp.flushAll(reqs, [PERSONS]);
-
+		flush();
 	}));
 
+	test("should provide a list of 2 persons", fakeAsync(() => {
+		spectatorHttp.service.getPersons(LESS_CONFIG).subscribe(element => {
+			expect(element.length).toBe(2);
+			expect(element.map(p => p.id)).toEqual([1, 2]);
+		});
 
+		const reqs = spectatorHttp.expectConcurrent([
+			{ url: "/assets/data/persons.json", method: HttpMethod.GET },
+		]);
+
+		spectatorHttp.flushAll(reqs, [PERSONS]);
+		flush();
+	}));
+	
+	test("should provide a list of 2 males", fakeAsync(() => {
+		spectatorHttp.service.getPersons(MALE_CONFIG).subscribe(element => {
+			expect(element.length).toBe(2);
+			expect(element.map(p => p.id)).toEqual([1, 2]);
+		});
+
+		const reqs = spectatorHttp.expectConcurrent([
+			{ url: "/assets/data/persons.json", method: HttpMethod.GET },
+		]);
+
+		spectatorHttp.flushAll(reqs, [PERSONS]);
+		flush();
+	}));
 });
-
