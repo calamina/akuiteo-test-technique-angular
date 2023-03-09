@@ -5,10 +5,12 @@ export const routes: Routes = [
 	{
 		path: "personnes",
 		loadChildren: () => import("./person/person.module").then(m => m.PersonModule),
+		data: { animation: 'personnes' }
 	},
 	{
 		path: "apropos",
 		loadChildren: () => import("./about/about.module").then(m => m.AboutModule),
+		data: { animation: 'apropos' }
 	},
 	{
 		path: "",
@@ -25,4 +27,3 @@ export const routes: Routes = [
 })
 export class AppRoutingModule {
 }
-

@@ -1,17 +1,14 @@
 <div class="banner">
-
-</div>
-<div class="title">
-	<h1>
-		Test technique Angular
-	</h1>
+	<div class="title">
+		<h1>
+			Test technique Angular
+		</h1>
 		<nav>
 			<a routerLink="/personnes" routerLinkActive="is-active" mat-button>Générateur</a>
 			<a routerLink="/apropos" routerLinkActive="is-active" mat-button>À propos</a>
 		</nav>
 	</div>
 </div>
-<div class="container">
+<div [@routeAnimations]="getRouteAnimationData()" class="container">
 	<router-outlet></router-outlet>
 </div>
-
