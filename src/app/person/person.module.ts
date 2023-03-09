@@ -10,11 +10,15 @@ import { PersonGeneratorComponent } from "./person-generator/person-generator.co
 import { PersonListComponent } from "./person-list/person-list.component";
 import { PersonRoutingModule } from "./person-routing.module";
 import { PersonService } from "./person.service";
+import { TranslateGenderPipe } from '../pipes/translateGender.pipe';
+import { atLeastOneGenderCheckedValidatorDirective } from "./at-least-one-gender-checked.directive";
 
 @NgModule({
 	declarations: [
 		PersonListComponent,
-		PersonGeneratorComponent
+		PersonGeneratorComponent,
+		TranslateGenderPipe,
+		atLeastOneGenderCheckedValidatorDirective
 	],
 	imports: [
 		CommonModule,
