@@ -19,3 +19,12 @@
 		<button mat-raised-button type="submit" [disabled]="generator.invalid">Générer</button>
 	</div>
 </form>
+
+<div class="form-alert">
+	<p *ngIf="generator.get('count').invalid">
+		Veuillez saisir un nombre compris entre 0 et 1000
+	</p>
+	<p *ngIf="!generator.get('female').value && !generator.get('male').value">
+		Veuillez sélectionner au moins un sexe
+	</p>
+</div>

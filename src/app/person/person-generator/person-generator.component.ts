@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from "@angular/core";
-import { FormBuilder, FormGroup, ValidationErrors, Validators } from "@angular/forms";
-import { Router } from "@angular/router";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { atLeastOneGenderCheckedValidator } from "../at-least-one-gender-checked.directive";
 import { GenerationConfig } from "../generation-config";
 
 @Component({
@@ -20,10 +20,17 @@ export class PersonGeneratorComponent implements OnInit {
 
 	ngOnInit() {
 		this.generator = this.formBuilder.group({
-			count: [1000],
+			count: [
+				1000, 
+				[
+					Validators.required,
+					Validators.min(0), 
+					Validators.max(1000)
+				],
+			],
 			male: [true],
 			female: [true]
-		});
+		},{ validators: atLeastOneGenderCheckedValidator });
 	}
 
 	generate() {

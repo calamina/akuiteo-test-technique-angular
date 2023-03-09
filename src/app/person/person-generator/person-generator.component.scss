@@ -32,7 +32,17 @@ form {
 			width: 150px;
 		}
 	}
+}
 
-	.actions {
+.form-alert {
+	width: 100%;
+	display: flex;
+	flex-flow: column;
+	align-items: center;
+	
+	p {
+		padding: 0 0 1rem;
+		width: fit-content;
+		color: red;
 	}
 }
